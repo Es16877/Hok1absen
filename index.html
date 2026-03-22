@@ -2,73 +2,693 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Sederhana</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Sistem Absen Staff - HR Presensi</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts: Poppins modern -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
-            background-color: #f0f0f0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
+
+        body {
+            background: linear-gradient(145deg, #eef2f9 0%, #d9e0eb 100%);
+            font-family: 'Inter', sans-serif;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            color: #1a2634;
+        }
+
+        /* container utama */
         .container {
-            max-width: 800px;
+            max-width: 1400px;
             margin: 0 auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        
-        h1 {
-            color: #333;
+
+        /* header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+            padding: 1rem 2rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+        .title-section h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1f3b4c, #2c5a6e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+        .title-section p {
+            font-size: 0.85rem;
+            color: #4a627a;
+            margin-top: 0.2rem;
+        }
+        .date-box {
+            background: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+        .date-box i {
+            color: #2c7da0;
+        }
+
+        /* kartu statistik */
+        .stats-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            flex: 1;
+            min-width: 140px;
+            border-radius: 1.5rem;
+            padding: 1rem 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: #eef2ff;
+            border-radius: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: #2c7da0;
+        }
+        .stat-info h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+        .stat-info p {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #5e7a93;
+        }
+
+        /* dua kolom utama */
+        .two-columns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.8rem;
+        }
+        .col {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        /* card style */
+        .card {
+            background: white;
+            border-radius: 1.8rem;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin-bottom: 1.8rem;
+            border: 1px solid rgba(255,255,255,0.5);
+            transition: transform 0.1s;
+        }
+        .card-header {
+            padding: 1.2rem 1.5rem;
+            background: #f9fbfe;
+            border-bottom: 1px solid #e9edf2;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        .card-header i {
+            color: #2c7da0;
+            font-size: 1.3rem;
+        }
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* form absen */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        label {
+            font-weight: 600;
+            font-size: 0.8rem;
+            display: block;
+            margin-bottom: 0.4rem;
+            color: #2c4b62;
+        }
+        select, input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border-radius: 1.2rem;
+            border: 1.5px solid #e2e8f0;
+            background: white;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: #2c7da0;
+            box-shadow: 0 0 0 3px rgba(44,125,160,0.2);
+        }
+        .btn-absen {
+            background: linear-gradient(95deg, #1f6e8c, #2c7da0);
+            border: none;
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 1.6rem;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-absen:hover {
+            background: linear-gradient(95deg, #155d77, #236a88);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+        }
+        .info-note {
+            background: #f0f7fa;
+            padding: 0.7rem;
+            border-radius: 1rem;
+            font-size: 0.7rem;
+            color: #2c7da0;
+            margin-top: 1rem;
             text-align: center;
         }
-        
-        .content {
-            line-height: 1.6;
-            color: #666;
+
+        /* tabel staff & riwayat */
+        .staff-table-wrapper {
+            overflow-x: auto;
         }
-        
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
+        .staff-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .staff-table th, .staff-table td {
+            padding: 0.9rem 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid #edf2f7;
+        }
+        .staff-table th {
+            font-weight: 700;
+            color: #2c5a6e;
+            background: #fafcff;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.65rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        .badge.hadir { background: #dff9e6; color: #1e6f3f; }
+        .badge.izin { background: #fff3db; color: #b66f0e; }
+        .badge.sakit { background: #ffe2e2; color: #b13e3e; }
+        .badge.alpha { background: #eceff3; color: #5a6874; }
+        .action-icon {
+            color: #8aa0b5;
             cursor: pointer;
-            font-size: 16px;
+            margin: 0 3px;
+            transition: 0.1s;
         }
-        
-        button:hover {
-            background-color: #45a049;
+        .action-icon:hover { color: #2c7da0; }
+        .riwayat-item {
+            background: #fafcff;
+            border-radius: 1rem;
+            padding: 0.7rem;
+            margin-bottom: 0.7rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #2c7da0;
+        }
+        .riwayat-date {
+            font-weight: 600;
+            font-size: 0.7rem;
+            color: #2c7da0;
+        }
+        .empty-msg {
+            text-align: center;
+            padding: 1.5rem;
+            color: #8aa0b5;
+            font-style: italic;
+        }
+        .btn-reset {
+            background: none;
+            border: 1px solid #d0dae6;
+            padding: 0.3rem 0.9rem;
+            border-radius: 1.2rem;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #5e7a93;
+        }
+        .btn-reset:hover {
+            background: #eef2fa;
+            border-color: #2c7da0;
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.7rem;
+            color: #6f8faa;
+        }
+        @media (max-width: 780px) {
+            body { padding: 1rem; }
+            .card-header { padding: 1rem; }
+            .stat-card { min-width: 120px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Selamat Datang!</h1>
-        
-        <div class="content">
-            <p>Ini adalah contoh halaman HTML sederhana. Anda bisa mengeditnya sesuai kebutuhan.</p>
-            <p>HTML (HyperText Markup Language) adalah bahasa markup yang digunakan untuk membuat struktur halaman web.</p>
-            
-            <h3>Fitur-fitur:</h3>
-            <ul>
-                <li>Responsif - tampil baik di berbagai ukuran layar</li>
-                <li>Styling CSS sederhana</li>
-                <li>Interaktif dengan JavaScript</li>
-            </ul>
-            
-            <button onclick="tampilkanPesan()">Klik Saya!</button>
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <div class="title-section">
+            <h1><i class="fas fa-fingerprint" style="margin-right: 8px;"></i> Absen Staff</h1>
+            <p>Kelola kehadiran · Rekap harian & riwayat</p>
+        </div>
+        <div class="date-box" id="currentDateBox">
+            <i class="fas fa-calendar-alt"></i> 
+            <span id="liveDate"></span>
         </div>
     </div>
-    
-    <script>
-        function tampilkanPesan() {
-            alert('Halo! Terima kasih telah mengklik tombol ini.');
+
+    <!-- Statistik ringkasan -->
+    <div class="stats-grid" id="statsContainer">
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-info"><h3 id="totalStaff">0</h3><p>Total Staff</p></div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-info"><h3 id="hadirToday">0</h3><p>Hadir Hari Ini</p></div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-clock"></i></div><div class="stat-info"><h3 id="izinSakitToday">0</h3><p>Izin / Sakit</p></div></div>
+        <div class="stat-card"><div class="stat-icon"><i class="fas fa-chart-line"></i></div><div class="stat-info"><h3 id="alphaToday">0</h3><p>Alpha</p></div></div>
+    </div>
+
+    <div class="two-columns">
+        <!-- Kolom Kiri: Form Absen & Daftar Staff -->
+        <div class="col">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-pen-alt"></i> Form Absen Hari Ini</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label><i class="fas fa-id-badge"></i> Pilih Staff</label>
+                        <select id="staffSelect">
+                            <option value="">-- Pilih nama staff --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-flag-checkered"></i> Status Kehadiran</label>
+                        <select id="statusSelect">
+                            <option value="Hadir">✅ Hadir</option>
+                            <option value="Izin">📝 Izin</option>
+                            <option value="Sakit">🤒 Sakit</option>
+                            <option value="Alpha">❌ Alpha (Tanpa Keterangan)</option>
+                        </select>
+                    </div>
+                    <button class="btn-absen" id="absenBtn"><i class="fas fa-save"></i> Simpan Absen</button>
+                    <div class="info-note"><i class="fas fa-info-circle"></i> Absen hari ini akan menimpa data sebelumnya untuk staff yang sama.</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><i class="fas fa-address-card"></i> Daftar Staff <button class="btn-reset" id="resetStaffBtn" style="margin-left: auto;"><i class="fas fa-undo-alt"></i> Reset Default</button></div>
+                <div class="card-body staff-table-wrapper">
+                    <table class="staff-table" id="staffTable">
+                        <thead>
+                            <tr><th>Nama Staff</th><th>Status Hari Ini</th><th>Aksi</th></tr>
+                        </thead>
+                        <tbody id="staffTableBody">
+                            <!-- dynamic -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kolom Kanan: Riwayat Absen -->
+        <div class="col">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-history"></i> Riwayat Absen (7 hari terakhir) 
+                    <button class="btn-reset" id="clearHistoryBtn" style="margin-left: auto;"><i class="fas fa-trash-alt"></i> Hapus Riwayat</button>
+                </div>
+                <div class="card-body" id="historyContainer">
+                    <div class="empty-msg">Belum ada riwayat absen</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>Sistem Absen Staff &copy; HR Management — Data tersimpan di lokal perangkat (localStorage)</footer>
+</div>
+
+<script>
+    // ---------- DATA MODEL ----------
+    // Data staff (master)
+    let staffList = [
+        { id: 1, name: "Budi Santoso" },
+        { id: 2, name: "Dewi Lestari" },
+        { id: 3, name: "Andi Wijaya" },
+        { id: 4, name: "Siti Aisyah" },
+        { id: 5, name: "Rizky Fadilah" }
+    ];
+
+    // Data kehadiran harian: objek dengan key "YYYY-MM-DD" -> array of {staffId, status}
+    let dailyAttendance = {};
+
+    // Riwayat log: menyimpan history semua transaksi (untuk ditampilkan di riwayat, berbasis tanggal)
+    // Format: [{ id, staffName, status, dateString }]
+    let historyLog = [];
+
+    // Key localStorage
+    const STORAGE_STAFF = "absen_staff_list";
+    const STORAGE_DAILY = "absen_daily_attendance";
+    const STORAGE_HISTORY = "absen_history_log";
+
+    // Helper: dapatkan tanggal hari ini YYYY-MM-DD
+    function getTodayStr() {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd}`;
+    }
+
+    // simpan semua ke localStorage
+    function persistData() {
+        localStorage.setItem(STORAGE_STAFF, JSON.stringify(staffList));
+        localStorage.setItem(STORAGE_DAILY, JSON.stringify(dailyAttendance));
+        localStorage.setItem(STORAGE_HISTORY, JSON.stringify(historyLog));
+    }
+
+    // load data awal
+    function loadData() {
+        const storedStaff = localStorage.getItem(STORAGE_STAFF);
+        if (storedStaff) {
+            staffList = JSON.parse(storedStaff);
+        } else {
+            // default staff jika belum ada
+            staffList = [
+                { id: 1, name: "Budi Santoso" },
+                { id: 2, name: "Dewi Lestari" },
+                { id: 3, name: "Andi Wijaya" },
+                { id: 4, name: "Siti Aisyah" },
+                { id: 5, name: "Rizky Fadilah" }
+            ];
         }
-    </script>
+
+        const storedDaily = localStorage.getItem(STORAGE_DAILY);
+        if (storedDaily) {
+            dailyAttendance = JSON.parse(storedDaily);
+        } else {
+            dailyAttendance = {};
+        }
+
+        const storedHistory = localStorage.getItem(STORAGE_HISTORY);
+        if (storedHistory) {
+            historyLog = JSON.parse(storedHistory);
+        } else {
+            historyLog = [];
+        }
+    }
+
+    // Mendapatkan status staff untuk tanggal tertentu (default hari ini)
+    function getStaffStatusToday(staffId, dateStr = null) {
+        const targetDate = dateStr || getTodayStr();
+        if (!dailyAttendance[targetDate]) return null;
+        const record = dailyAttendance[targetDate].find(item => item.staffId === staffId);
+        return record ? record.status : null;
+    }
+
+    // update atau set absen staff pada tanggal tertentu
+    function setStaffAttendance(staffId, status, dateStr = null) {
+        const targetDate = dateStr || getTodayStr();
+        if (!dailyAttendance[targetDate]) {
+            dailyAttendance[targetDate] = [];
+        }
+        const existingIndex = dailyAttendance[targetDate].findIndex(item => item.staffId === staffId);
+        if (existingIndex !== -1) {
+            dailyAttendance[targetDate][existingIndex].status = status;
+        } else {
+            dailyAttendance[targetDate].push({ staffId, status });
+        }
+        persistData();
+    }
+
+    // menambahkan catatan ke history log (hindari duplikasi per hari per staff? tapi biarkan semua aksi terekam)
+    function addHistoryLog(staffName, status, dateStr) {
+        const newEntry = {
+            id: Date.now() + Math.random() * 1000,
+            staffName: staffName,
+            status: status,
+            dateString: dateStr,
+            timestamp: new Date().toISOString()
+        };
+        historyLog.unshift(newEntry); // terbaru di atas
+        // batasi riwayat max 200 entries agar tidak overload
+        if (historyLog.length > 200) historyLog.pop();
+        persistData();
+    }
+
+    // Reset data staff ke default (tidak menghapus riwayat, hanya staff list & reset kehadiran hari ini opsional? 
+    // namun agar konsisten, reset staff dan kosongkan dailyAttendance? lebih baik reset staff dan kosongkan seluruh data absen? sesuai permintaan: reset staff dan bersihkan absen hari ini? 
+    // implementasi: Reset staff ke default, dan hapus semua data kehadiran dan riwayat? lebih aman hanya staff, tapi agar tidak rancu, kita reset staff & hapus semua absen daily & history dengan konfirmasi.
+    function resetStaffToDefault() {
+        if (confirm("⚠️ Reset staff akan mengembalikan daftar staff ke default (Budi, Dewi, Andi, Siti, Rizky) dan MENGHAPUS SEMUA DATA ABSEN & RIWAYAT! Lanjutkan?")) {
+            staffList = [
+                { id: 1, name: "Budi Santoso" },
+                { id: 2, name: "Dewi Lestari" },
+                { id: 3, name: "Andi Wijaya" },
+                { id: 4, name: "Siti Aisyah" },
+                { id: 5, name: "Rizky Fadilah" }
+            ];
+            dailyAttendance = {};
+            historyLog = [];
+            persistData();
+            renderAll();
+            alert("Data berhasil direset ke default.");
+        }
+    }
+
+    function clearHistoryOnly() {
+        if (confirm("Hapus seluruh riwayat absen? Data kehadiran hari ini tidak terpengaruh.")) {
+            historyLog = [];
+            persistData();
+            renderAll();
+        }
+    }
+
+    // hapus absen per staff hari ini
+    function deleteTodayAttendance(staffId, staffName) {
+        const today = getTodayStr();
+        if (dailyAttendance[today]) {
+            const filtered = dailyAttendance[today].filter(item => item.staffId !== staffId);
+            if (filtered.length !== dailyAttendance[today].length) {
+                dailyAttendance[today] = filtered;
+                if (dailyAttendance[today].length === 0) delete dailyAttendance[today];
+                persistData();
+                // tambah log penghapusan? optional
+                addHistoryLog(staffName, "Dihapus (absen dibatalkan)", today);
+                renderAll();
+            } else {
+                alert("Staff ini belum memiliki absen hari ini.");
+            }
+        } else {
+            alert("Belum ada data absen hari ini.");
+        }
+    }
+
+    // Render seluruh UI
+    function renderAll() {
+        renderStaffSelect();
+        renderStaffTable();
+        renderStats();
+        renderHistory();
+        updateDateDisplay();
+    }
+
+    function renderStaffSelect() {
+        const selectEl = document.getElementById("staffSelect");
+        if (!selectEl) return;
+        selectEl.innerHTML = '<option value="">-- Pilih nama staff --</option>';
+        staffList.forEach(staff => {
+            const option = document.createElement("option");
+            option.value = staff.id;
+            option.textContent = staff.name;
+            selectEl.appendChild(option);
+        });
+    }
+
+    function renderStaffTable() {
+        const tbody = document.getElementById("staffTableBody");
+        if (!tbody) return;
+        const todayStr = getTodayStr();
+        tbody.innerHTML = "";
+        staffList.forEach(staff => {
+            const statusToday = getStaffStatusToday(staff.id, todayStr);
+            let statusBadge = "";
+            if (!statusToday) statusBadge = '<span class="badge alpha">Belum Absen</span>';
+            else if (statusToday === "Hadir") statusBadge = '<span class="badge hadir"><i class="fas fa-check"></i> Hadir</span>';
+            else if (statusToday === "Izin") statusBadge = '<span class="badge izin"><i class="fas fa-envelope"></i> Izin</span>';
+            else if (statusToday === "Sakit") statusBadge = '<span class="badge sakit"><i class="fas fa-thermometer-half"></i> Sakit</span>';
+            else if (statusToday === "Alpha") statusBadge = '<span class="badge alpha"><i class="fas fa-times-circle"></i> Alpha</span>';
+            else statusBadge = '<span class="badge alpha">-</span>';
+            
+            const row = tbody.insertRow();
+            row.insertCell(0).textContent = staff.name;
+            row.insertCell(1).innerHTML = statusBadge;
+            const actionCell = row.insertCell(2);
+            actionCell.innerHTML = `<i class="fas fa-trash-alt action-icon" title="Hapus absen hari ini" data-id="${staff.id}" data-name="${staff.name}"></i>`;
+        });
+        // attach event delete
+        document.querySelectorAll('.action-icon').forEach(icon => {
+            icon.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const id = parseInt(icon.getAttribute('data-id'));
+                const name = icon.getAttribute('data-name');
+                deleteTodayAttendance(id, name);
+            });
+        });
+    }
+
+    function renderStats() {
+        const today = getTodayStr();
+        const totalStaff = staffList.length;
+        let hadir = 0, izinSakit = 0, alpha = 0;
+        if (dailyAttendance[today]) {
+            dailyAttendance[today].forEach(rec => {
+                const staffExists = staffList.some(s => s.id === rec.staffId);
+                if (!staffExists) return;
+                if (rec.status === "Hadir") hadir++;
+                else if (rec.status === "Izin" || rec.status === "Sakit") izinSakit++;
+                else if (rec.status === "Alpha") alpha++;
+            });
+        }
+        const tidakAbsen = totalStaff - (hadir + izinSakit + alpha);
+        // alpha hari ini = alpha + tidak absen (karena belum absen dianggap alpha secara rekap? sesuai standar: belum absen = Alpha)
+        const totalAlphaEffective = alpha + tidakAbsen;
+        document.getElementById("totalStaff").innerText = totalStaff;
+        document.getElementById("hadirToday").innerText = hadir;
+        document.getElementById("izinSakitToday").innerText = izinSakit;
+        document.getElementById("alphaToday").innerText = totalAlphaEffective;
+    }
+
+    function renderHistory() {
+        const container = document.getElementById("historyContainer");
+        if (!container) return;
+        if (historyLog.length === 0) {
+            container.innerHTML = '<div class="empty-msg"><i class="fas fa-database"></i> Belum ada riwayat absen</div>';
+            return;
+        }
+        // ambil 20 terbaru saja
+        const recent = historyLog.slice(0, 30);
+        container.innerHTML = "";
+        recent.forEach(log => {
+            const div = document.createElement("div");
+            div.className = "riwayat-item";
+            let statusIcon = "";
+            if (log.status === "Hadir") statusIcon = "✅";
+            else if (log.status === "Izin") statusIcon = "📝";
+            else if (log.status === "Sakit") statusIcon = "🤒";
+            else if (log.status === "Alpha") statusIcon = "❌";
+            else statusIcon = "🔄";
+            div.innerHTML = `
+                <div><strong>${escapeHtml(log.staffName)}</strong><br><span style="font-size:0.7rem; color:#4b6b86;">${statusIcon} ${log.status}</span></div>
+                <div class="riwayat-date"><i class="far fa-calendar-alt"></i> ${log.dateString}</div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function escapeHtml(str) { 
+        if(!str) return "";
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function updateDateDisplay() {
+        const dateSpan = document.getElementById("liveDate");
+        if (dateSpan) {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateSpan.textContent = now.toLocaleDateString('id-ID', options);
+        }
+    }
+
+    // Proses absen baru
+    function processAbsen() {
+        const staffId = parseInt(document.getElementById("staffSelect").value);
+        const status = document.getElementById("statusSelect").value;
+        if (!staffId || isNaN(staffId)) {
+            alert("Pilih staff terlebih dahulu!");
+            return;
+        }
+        const selectedStaff = staffList.find(s => s.id === staffId);
+        if (!selectedStaff) {
+            alert("Staff tidak ditemukan!");
+            return;
+        }
+        const today = getTodayStr();
+        // simpan ke daily
+        setStaffAttendance(staffId, status, today);
+        // catat history
+        addHistoryLog(selectedStaff.name, status, today);
+        renderAll();
+        alert(`Absen berhasil: ${selectedStaff.name} → ${status} (${today})`);
+    }
+
+    // event listener dan inisialisasi
+    document.addEventListener("DOMContentLoaded", () => {
+        loadData();
+        renderAll();
+
+        const absenBtn = document.getElementById("absenBtn");
+        if (absenBtn) absenBtn.addEventListener("click", processAbsen);
+        
+        const resetStaffBtn = document.getElementById("resetStaffBtn");
+        if (resetStaffBtn) resetStaffBtn.addEventListener("click", resetStaffToDefault);
+        
+        const clearHistoryBtn = document.getElementById("clearHistoryBtn");
+        if (clearHistoryBtn) clearHistoryBtn.addEventListener("click", clearHistoryOnly);
+    });
+</script>
 </body>
 </html>
