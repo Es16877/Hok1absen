@@ -1,1 +1,74 @@
-
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Sederhana</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        
+        .content {
+            line-height: 1.6;
+            color: #666;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Selamat Datang!</h1>
+        
+        <div class="content">
+            <p>Ini adalah contoh halaman HTML sederhana. Anda bisa mengeditnya sesuai kebutuhan.</p>
+            <p>HTML (HyperText Markup Language) adalah bahasa markup yang digunakan untuk membuat struktur halaman web.</p>
+            
+            <h3>Fitur-fitur:</h3>
+            <ul>
+                <li>Responsif - tampil baik di berbagai ukuran layar</li>
+                <li>Styling CSS sederhana</li>
+                <li>Interaktif dengan JavaScript</li>
+            </ul>
+            
+            <button onclick="tampilkanPesan()">Klik Saya!</button>
+        </div>
+    </div>
+    
+    <script>
+        function tampilkanPesan() {
+            alert('Halo! Terima kasih telah mengklik tombol ini.');
+        }
+    </script>
+</body>
+</html>
